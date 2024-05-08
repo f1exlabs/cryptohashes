@@ -10,7 +10,6 @@
 #include "crypto/c_keccak.h"
 #include "crypto/c_groestl.h"
 #include "crypto/c_blake256.h"
-#include "crypto/c_jh.h"
 #include "crypto/c_skein.h"
 #include "crypto/int-util.h"
 #include "crypto/hash-ops.h"
@@ -125,18 +124,13 @@ void do_soft_shell_groestl_hash(const void* input, size_t len, char* output) {
     groestl(input, len * 8, (uint8_t*)output);
 }
 
-static void do_soft_shell_jh_hash(const void* input, size_t len, char* output) {
-    int r = jh_hash(HASH_SIZE * 8, input, 8 * len, (uint8_t*)output);
-    assert(SUCCESS == r);
-}
-
 static void do_soft_shell_skein_hash(const void* input, size_t len, char* output) {
     int r = c_skein_hash(8 * HASH_SIZE, input, 8 * len, (uint8_t*)output);
     assert(SKEIN_SUCCESS == r);
 }
 
-static void (* const extra_hashes[4])(const void *, size_t, char *) = {
-    do_soft_shell_blake_hash, do_soft_shell_groestl_hash, do_soft_shell_jh_hash, do_soft_shell_skein_hash
+static void (* const extra_hashes[3])(const void *, size_t, char *) = {
+    do_soft_shell_blake_hash, do_soft_shell_groestl_hash, do_soft_shell_skein_hash
 };
 
 extern int aesb_single_round(const uint8_t *in, uint8_t*out, const uint8_t *expandedKey);
@@ -287,7 +281,7 @@ void cryptonight_soft_shell_hash(const char* input, char* output, uint32_t len, 
     memcpy(state.init, text, INIT_SIZE_BYTE);
     hash_permutation(&state.hs);
     /*memcpy(hash, &state, 32);*/
-    extra_hashes[state.hs.b[0] & 3](&state, 200, output);
+    extra_hashes[state.hs.b[0] & 2](&state, 200, output);
     oaes_free((OAES_CTX **) &aes_ctx);
 }
 

@@ -1,8 +1,8 @@
 from distutils.core import setup, Extension
 
-gr_hash_module = Extension('gr_hash',
-                               sources = ['gr_module.c',
-                                          'gr.c',
+gr_hash_module = Extension('cryptohashes',
+                               sources = ['cryptohashes_module.c',
+                                          'flex.c',
                                           'sph/extra.c',
                                           'sph/blake.c',
                                           'sph/echo.c', 
@@ -47,6 +47,6 @@ gr_hash_module = Extension('gr_hash',
                             include_dirs=['.', './sph', './cryptonote', 
                                           './cryptonote/crypto'])
 
-setup (name = 'gr_hash',
+setup (name = 'cryptohashes',
        version = '1.0',
        ext_modules = [gr_hash_module])

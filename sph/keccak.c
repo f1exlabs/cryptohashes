@@ -1615,7 +1615,7 @@ keccak_core(sph_keccak_context *kc, const void *data, size_t len, size_t lim)
 		} u; \
 		size_t j; \
  \
-		eb = (0x100 | (ub & 0xFF)) >> (8 - n); \
+		eb = 6; \
 		if (kc->ptr == (lim - 1)) { \
 			if (n == 7) { \
 				u.tmp[0] = eb; \

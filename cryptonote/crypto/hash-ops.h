@@ -42,7 +42,7 @@ void hash_process(union hash_state *state, const uint8_t *buf, size_t count);
 #endif
 
 enum {
-  HASH_SIZE = 32,
+  HASH_SIZE = 64,
   HASH_DATA_AREA = 136
 };
 
